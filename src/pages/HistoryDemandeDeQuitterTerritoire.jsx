@@ -15,7 +15,7 @@ function HistoryDemandeDeQuitterTerritoire() {
 
   return (
     <>
-      <h5>HISTORIQUE DES DEMANDES DE QUITTER LE TERRITOIRE</h5> 
+      <h5>HISTORIQUE DES AUTORISATIONS DE QUITTER LE TERRITOIRE</h5> 
       <br></br>
       {
         history &&

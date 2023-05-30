@@ -66,6 +66,8 @@ export default function OrdreDeMission() {
         className="ui form"
         style={{ padding: "10em" }}
       >
+
+        <h2>ORDRE DE MISSION</h2>
         <TextInput label="CIN" placeholder="Entrer votre CIN" name="cin" />
 
 

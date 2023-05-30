@@ -52,6 +52,8 @@ export default function AttestationDeTravail() {
         className="ui form"
         style={{ padding: "10em"}}
       >
+
+        <h2>ATTESTATION DE TRAVAIL</h2>
         <TextInput label="CIN" placeholder="Entrer votre CIN" name="cin" />
 
 

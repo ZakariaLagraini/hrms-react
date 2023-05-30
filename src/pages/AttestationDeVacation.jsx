@@ -62,6 +62,7 @@ export default function AttestationDeVacation() {
         className="ui form"
         style={{ padding: "10em"}}
       >
+        <h2>ATTESTATION DE VACATION</h2>
         <TextInput label="CIN" placeholder="Entrer votre CIN" name="cin" />
 
 

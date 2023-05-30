@@ -60,6 +60,7 @@ export default function DemandeDeQuitterTerritoire() {
         className="ui form"
         style={{ padding: "10em"}}
       >
+        <h2>AUTORISATION DE QUITTER LE TERRITOIRE</h2>
         <TextInput label="CIN" placeholder="Entrer votre CIN" name="cin" />
 
 

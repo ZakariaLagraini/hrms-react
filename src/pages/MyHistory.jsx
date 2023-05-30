@@ -29,7 +29,7 @@ export default function Home() {
         ButtonFactory("HISTORIQUES DES ATTESTATIONS DE VACATION", <HiClipboardDocumentList size={30}/>, "/history-attestation-de-vacation")
       }
       {
-        ButtonFactory("HISTORIQUES DES DEMANDES DE QUITTER LE TERRITOIRE", <MdOutgoingMail size={30}/>, "/history-demande-de-quitter-territoire")
+        ButtonFactory("HISTORIQUES DES AUTORISATIONS DE QUITTER LE TERRITOIRE", <MdOutgoingMail size={30}/>, "/history-demande-de-quitter-territoire")
       }
       
       
