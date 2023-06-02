@@ -18,7 +18,7 @@ function Employee() {
     <>
       <h5>LISTES DES EMPLOYES</h5> 
       
-      <Button as={Link} to={"/employee-add"} style={{box_sizing:'content-box'  }}>Ajouter un employé </Button>
+      <Button class="ui button" as={Link} to={"/employee-add"} style={{box_sizing:'content-box'}} color='green' >Ajouter un employé </Button>
       <br/>
       
       <br></br>
@@ -75,8 +75,12 @@ function Employee() {
                 {entry.date_fonction.substring(0, 10)}
               </TableCell>
               <TableCell style={{ border: '1px solid #ddd', padding: '8px' }}>
-                <button  style={{ padding: '8px', margin: '8px' }} > Edit </button>
-                <button style={{ padding: '8px', margin: '8px' }} > Delete </button>
+                <button   class="ui circular blue icon button" style={{ padding: '8px', margin: '8px' }}  > 
+                <i class="edit icon"></i>
+                </button>
+                <button class="ui circular red icon button" style={{ padding: '8px', margin: '8px' }}  > 
+                <i class="trash icon"></i>
+                </button>
               </TableCell>
             </TableRow>
           ))}

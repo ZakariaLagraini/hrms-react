@@ -49,7 +49,7 @@ export default function EmployeeAdd() {
             title: 'Ajouté',
             text: 'L\'opération a été éfféctuer avec succes!',
           });
-          window.location.reload();
+          window.location.assign("/employee");
         }
       }).catch((result) => {
         Swal.fire({
