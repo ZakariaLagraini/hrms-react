@@ -6,8 +6,8 @@ import { Formik, Form } from "formik";
 import { Button } from "semantic-ui-react";
 import TextInput from "../utilities/customFormControls/TextInput";
 import EmployeeAddService from "../services/EmployeeAddService";
-import Swal from 'sweetalert2'
 import DateTimeInput from "../utilities/customFormControls/DateTimeInput";
+import Swal from 'sweetalert2'
 
 export default function EmployeeAdd() { 
   
@@ -99,7 +99,7 @@ export default function EmployeeAdd() {
           Ajouter
         </Button>
         <Button as={Link} to={"/employee"} style={{ backgroundColor:'Red', color:'white' }} type="reset">
-          Cancel
+          Annuler
         </Button>
       </Form>
     </Formik>

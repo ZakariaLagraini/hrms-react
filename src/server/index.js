@@ -254,6 +254,38 @@ app.post('/api/employee-add/add', (req, res) => {
     });
 }) ;
 
+app.put('/api/employees/:id', (req, res) => {
+    const { id } = req.params;
+    const { cin, nom, prenom, grade, som, date_fonction } = req.body;
+  
+    const sql = `UPDATE employees SET cin=?, nom=?, prenom=?, grade=?, som=?, date_fonction=? WHERE id=?`;
+    db.query(sql, [cin, nom, prenom, grade, som, date_fonction, id], (err, result) => {
+      if (err) {
+        res.status(500).json({ error: 'Failed to update employee' });
+      } else {
+        res.sendStatus(200);
+      }
+    });
+  });
+
+  app.delete('/api/employees/:id', (req, res) => {
+    const { id } = req.params;
+  
+    const sql = 'DELETE FROM employees WHERE id = ?';
+    db.query(sql, [id], (error, result) => {
+      if (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Failed to delete employee' });
+      } else {
+        if (result.affectedRows === 0) {
+          res.status(404).json({ error: 'Employee not found' });
+        } else {
+          res.sendStatus(204);
+        }
+      }
+    });
+  });
+
 // Route to delete a post
 
 app.delete('/api/delete/:id', (req, res) => {

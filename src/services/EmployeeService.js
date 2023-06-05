@@ -9,4 +9,12 @@ export default class EmployeeService{
          await promise.then((result) => data = JSON.stringify(result.data));
        return data; 
     }
+
+    updateEmployee(employee) {
+      return axios.put(`http://localhost:3001/api/employees/${employee.id}`, employee);
+    }
+
+    deleteEmployee(id) {
+      return axios.delete(`http://localhost:3001/api/employees/${id}`);
+    }
 }
