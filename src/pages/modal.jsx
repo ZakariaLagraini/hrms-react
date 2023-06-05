@@ -85,7 +85,7 @@ export default function ModalExampleModal({ entry }) {
           <Form.Field>
             <label>DATE DE FONCTION</label>
             <input
-              type="text"
+              type="date"
               name="date_fonction"
               value={dateFonction}
               onChange={(e) => setDateFonction(e.target.value)}

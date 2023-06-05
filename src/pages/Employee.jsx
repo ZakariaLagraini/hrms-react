@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from "react-router-dom";
 import EmployeeService from '../services/EmployeeService';
-import { Table, TableCell, TableHeader, TableRow, Button, Modal } from 'semantic-ui-react';
+import { Table, TableCell, TableHeader, TableRow, Button } from 'semantic-ui-react';
 import ModalExampleModal from './modal';
 import Swal from 'sweetalert2';
 

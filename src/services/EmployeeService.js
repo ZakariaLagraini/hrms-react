@@ -17,4 +17,5 @@ export default class EmployeeService{
     deleteEmployee(id) {
       return axios.delete(`http://localhost:3001/api/employees/${id}`);
     }
+    
 }
