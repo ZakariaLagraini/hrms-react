@@ -18,4 +18,23 @@ export default class EmployeeService{
       return axios.delete(`http://localhost:3001/api/employees/${id}`);
     }
     
+    async importEmployees(file, adminId) {
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('admin_id', adminId);
+  
+        const response = await axios.post('http://localhost:3001/import-employees', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+  
+        return response;
+      } catch (error) {
+        console.error('Error importing employees: ', error);
+        throw error;
+      }
+    }
+    
 }

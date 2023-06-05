@@ -3,6 +3,8 @@ const cors = require('cors')
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const pdf = require('html-pdf');
+const xlsx = require('xlsx');
+const multer = require('multer');
 const pdfTemplate1 = require('./documents/ordre-mission');
 const pdfTemplate2 = require('./documents/attestation-travail');
 const pdfTemplate3 = require('./documents/attestation-vacation');
@@ -21,6 +23,45 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.json())
+
+const upload = multer().single('file');
+
+// Define the API endpoint for importing employees from Excel
+app.post('/import-employees', upload, (req, res) => {
+  // Get the uploaded Excel file from the request
+  const file = req.file;
+  const admin_id = req.body.admin_id;
+
+  // Parse the Excel file
+  const workbook = xlsx.read(file.buffer, { type: 'buffer' });
+
+  // Get the first sheet of the workbook
+  const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+
+  // Convert the worksheet to JSON
+  const jsonData = xlsx.utils.sheet_to_json(worksheet);
+
+  // Iterate over each row in the JSON data and insert as a new employee
+  jsonData.forEach((row) => {
+    const { cin, nom, prenom, grade, som, date_fonction } = row;
+
+    // Create the SQL query to insert the employee
+    const query = `INSERT INTO employees (admin_id, cin, nom, prenom, grade, som, date_fonction) 
+                   VALUES ('${admin_id}', '${cin}', '${nom}', '${prenom}', '${grade}', '${som}', '${date_fonction}')`;
+
+    // Execute the SQL query
+    db.query(query, (err, result) => {
+      if (err) {
+        console.error('Error inserting employee: ', err);
+      } else {
+        console.log('Employee inserted successfully');
+      }
+    });
+  });
+
+  // Send a response indicating the import is complete
+  res.sendStatus(200);
+});
 
 app.post('/api/users/login', (req, res) => {
 
