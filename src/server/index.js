@@ -95,7 +95,7 @@ app.post('/api/ordre-de-mission/create', (req, res) => {
             console.log(err)
         }
 
-        db.query("SELECT * FROM ordre_mission JOIN employees ON employees.cin = ? LIMIT 1;", [cin], (errr, rows) => {
+        db.query("SELECT * FROM ordre_mission JOIN employees ON employees.cin = ordre_mission.employee_cin where employees.cin = ? LIMIT 1;", [cin], (errr, rows) => {
             employee = rows[0];
             res.send(employee);
         });
@@ -103,7 +103,7 @@ app.post('/api/ordre-de-mission/create', (req, res) => {
 })
 
 app.post('/api/create-pdf-ordre-de-mission', (req, res) => {
-    pdf.create(pdfTemplate1(req.body), {}).toFile(`${__dirname}/generated/ordre-mission/${req.params.cin}.pdf`, (err) => {
+    pdf.create(pdfTemplate1(req.body), {}).toFile(`${__dirname}/generated/ordre-mission/${req.body.cin}.pdf`, (err) => {
         if (err) {
             res.send(Promise.reject());
         }
@@ -111,7 +111,7 @@ app.post('/api/create-pdf-ordre-de-mission', (req, res) => {
     });
 });
 
-app.get('/api/fetch-pdf-ordre-de-mission/', (req, res) => {
+app.get('/api/fetch-pdf-ordre-de-mission/:cin', (req, res) => {
     res.sendFile(`${__dirname}/generated/ordre-mission/${req.params.cin}.pdf`)
 });
 
@@ -133,7 +133,7 @@ app.post('/api/attestation-de-travail/create', (req, res) => {
 
 
 app.post('/api/create-pdf-attestation-de-travail', (req, res) => {
-    pdf.create(pdfTemplate2(req.body), {}).toFile(`${__dirname}/generated/attestation-travail/${req.params.cin}.pdf`, (err) => {
+    pdf.create(pdfTemplate2(req.body), {}).toFile(`${__dirname}/generated/attestation-travail/${req.body.cin}.pdf`, (err) => {
         if (err) {
             res.send(Promise.reject());
         }
@@ -141,7 +141,7 @@ app.post('/api/create-pdf-attestation-de-travail', (req, res) => {
     });
 });
 
-app.get('/api/fetch-pdf-attestation-de-travail/', (req, res) => {
+app.get('/api/fetch-pdf-attestation-de-travail/:cin', (req, res) => {
     res.sendFile(`${__dirname}/generated/attestation-travail/${req.params.cin}.pdf`)
 });
 
@@ -169,7 +169,7 @@ app.post('/api/attestation-de-vacation/create', (req, res) => {
 })
 
 app.post('/api/create-pdf-attestation-de-vacation', (req, res) => {
-    pdf.create(pdfTemplate3(req.body), {}).toFile(`${__dirname}/generated/attestation-de-vacation/${req.params.cin}.pdf`, (err) => {
+    pdf.create(pdfTemplate3(req.body), {}).toFile(`${__dirname}/generated/attestation-de-vacation/${req.body.cin}.pdf`, (err) => {
         if (err) {
             res.send(Promise.reject());
         }
@@ -177,7 +177,7 @@ app.post('/api/create-pdf-attestation-de-vacation', (req, res) => {
     });
 });
 
-app.get('/api/fetch-pdf-attestation-de-vacation/', (req, res) => {
+app.get('/api/fetch-pdf-attestation-de-vacation/:cin', (req, res) => {
     res.sendFile(`${__dirname}/generated/attestation-de-vacation/${req.params.cin}.pdf`)
 });
 
@@ -201,7 +201,7 @@ app.post('/api/demande-de-quitter-territoire/create', (req, res) => {
 })
 
 app.post('/api/create-pdf-demande-de-quitter-territoire', (req, res) => {
-    pdf.create(pdfTemplate4(req.body), {}).toFile(`${__dirname}/generated/demande-de-quitter-territoire/${req.params.cin}.pdf`, (err) => {
+    pdf.create(pdfTemplate4(req.body), {}).toFile(`${__dirname}/generated/demande-de-quitter-territoire/${req.body.cin}.pdf`, (err) => {
         if (err) {
             res.send(Promise.reject());
         }
@@ -209,7 +209,7 @@ app.post('/api/create-pdf-demande-de-quitter-territoire', (req, res) => {
     });
 });
 
-app.get('/api/fetch-pdf-demande-de-quitter-territoire/', (req, res) => {
+app.get('/api/fetch-pdf-demande-de-quitter-territoire/:cin', (req, res) => {
     res.sendFile(`${__dirname}/generated/demande-de-quitter-territoire/${req.params.cin}.pdf`)
 });
 

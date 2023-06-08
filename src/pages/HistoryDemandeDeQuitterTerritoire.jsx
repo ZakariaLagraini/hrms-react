@@ -22,9 +22,6 @@ function HistoryDemandeDeQuitterTerritoire() {
         <Table style={{ borderCollapse: 'collapse', width: '100%' }}>
           <TableHeader style={{ backgroundColor: '#e7e7e7' }}>
             <TableCell style={{ border: '1px solid #ddd', padding: '8px' }}>
-              ID
-            </TableCell>
-            <TableCell style={{ border: '1px solid #ddd', padding: '8px' }}>
               CIN
             </TableCell>
             <TableCell style={{ border: '1px solid #ddd', padding: '8px' }}>
@@ -39,9 +36,6 @@ function HistoryDemandeDeQuitterTerritoire() {
           </TableHeader>
           {history.map((entry) => (
             <TableRow key={entry.id}>
-              <TableCell style={{ border: '1px solid #ddd', padding: '8px' }}>
-                {entry.id}
-              </TableCell>
               <TableCell style={{ border: '1px solid #ddd', padding: '8px' }}>
                 {entry.employee_cin}
               </TableCell>
