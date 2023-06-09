@@ -28,39 +28,53 @@ const upload = multer().single('file');
 
 // Define the API endpoint for importing employees from Excel
 app.post('/import-employees', upload, (req, res) => {
-  // Get the uploaded Excel file from the request
-  const file = req.file;
-  const admin_id = req.body.admin_id;
+    // Get the uploaded Excel file from the request
+    const file = req.file;
+    const admin_id = req.body.admin_id;
 
-  // Parse the Excel file
-  const workbook = xlsx.read(file.buffer, { type: 'buffer' });
+    // Parse the Excel file
+    const workbook = xlsx.read(file.buffer, { type: 'buffer' });
 
-  // Get the first sheet of the workbook
-  const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+    // Get the first sheet of the workbook
+    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
 
-  // Convert the worksheet to JSON
-  const jsonData = xlsx.utils.sheet_to_json(worksheet);
+    // Convert the worksheet to JSON
+    const jsonData = xlsx.utils.sheet_to_json(worksheet);
 
-  // Iterate over each row in the JSON data and insert as a new employee
-  jsonData.forEach((row) => {
-    const { cin, nom, prenom, grade, som, date_fonction } = row;
+    // Iterate over each row in the JSON data and insert as a new employee
+    jsonData.forEach((row) => {
+        const { cin, nom, prenom, grade, som, date_fonction } = row;
 
-    // Create the SQL query to insert the employee
-    const query = `INSERT INTO employees (admin_id, cin, nom, prenom, grade, som, date_fonction) 
+        // Create the SQL query to insert the employee
+        const query = `INSERT INTO employees (admin_id, cin, nom, prenom, grade, som, date_fonction) 
                    VALUES ('${admin_id}', '${cin}', '${nom}', '${prenom}', '${grade}', '${som}', '${date_fonction}')`;
 
-    // Execute the SQL query
-    db.query(query, (err, result) => {
-      if (err) {
-        console.error('Error inserting employee: ', err);
-      } else {
-        console.log('Employee inserted successfully');
-      }
+        // Execute the SQL query
+        db.query(query, (err, result) => {
+            if (err) {
+                console.error('Error inserting employee: ', err);
+            } else {
+                console.log('Employee inserted successfully');
+            }
+        });
     });
-  });
 
-  // Send a response indicating the import is complete
-  res.sendStatus(200);
+    // Send a response indicating the import is complete
+    res.sendStatus(200);
+});
+
+app.get('/api/export_employees', (req, res) => {
+    db.query('SELECT * FROM employees', (error, results) => {
+
+
+        if (error) {
+            console.error('Error executing query:', error);
+            res.status(500).json({ error: 'Internal server error' });
+            return;
+        }
+
+        res.json(results);
+    });
 });
 
 app.post('/api/users/login', (req, res) => {
@@ -124,7 +138,7 @@ app.post('/api/attestation-de-travail/create', (req, res) => {
         if (err) {
             console.log(err)
         }
-        db.query("SELECT * FROM attestation_travail JOIN employees ON employees.cin = ? LIMIT 1;", [cin], (errr, rows) => {
+        db.query("SELECT * FROM attestation_travail JOIN employees ON employees.cin = attestation_travail.employee_cin where employees.cin = ? LIMIT 1;", [cin], (errr, rows) => {
             employee = rows[0];
             res.send(employee);
         });
@@ -161,7 +175,7 @@ app.post('/api/attestation-de-vacation/create', (req, res) => {
         if (err) {
             console.log(err)
         }
-        db.query("SELECT * FROM attestation_vacation JOIN employees ON employees.cin = ? LIMIT 1;", [cin], (errr, rows) => {
+        db.query("SELECT * FROM attestation_vacation JOIN employees ON employees.cin = attestation_vacation.employee_cin where employees.cin = ? LIMIT 1;", [cin], (errr, rows) => {
             employee = rows[0];
             res.send(employee);
         });
@@ -193,7 +207,7 @@ app.post('/api/demande-de-quitter-territoire/create', (req, res) => {
         if (err) {
             console.log(err)
         }
-        db.query("SELECT * FROM demande_quitter_territoire JOIN employees ON employees.cin = ? LIMIT 1;", [cin], (errr, rows) => {
+        db.query("SELECT * FROM demande_quitter_territoire JOIN employees ON employees.cin = demande_quitter_territoire.employee_cin where employees.cin = ? LIMIT 1;", [cin], (errr, rows) => {
             employee = rows[0];
             res.send(employee);
         });
@@ -293,39 +307,39 @@ app.post('/api/employee-add/add', (req, res) => {
         }
         res.send(result);
     });
-}) ;
+});
 
 app.put('/api/employees/:id', (req, res) => {
     const { id } = req.params;
     const { cin, nom, prenom, grade, som, date_fonction } = req.body;
-  
+
     const sql = `UPDATE employees SET cin=?, nom=?, prenom=?, grade=?, som=?, date_fonction=? WHERE id=?`;
     db.query(sql, [cin, nom, prenom, grade, som, date_fonction, id], (err, result) => {
-      if (err) {
-        res.status(500).json({ error: 'Failed to update employee' });
-      } else {
-        res.sendStatus(200);
-      }
+        if (err) {
+            res.status(500).json({ error: 'Failed to update employee' });
+        } else {
+            res.sendStatus(200);
+        }
     });
-  });
+});
 
-  app.delete('/api/employees/:id', (req, res) => {
+app.delete('/api/employees/:id', (req, res) => {
     const { id } = req.params;
-  
+
     const sql = 'DELETE FROM employees WHERE id = ?';
     db.query(sql, [id], (error, result) => {
-      if (error) {
-        console.log(error);
-        res.status(500).json({ error: 'Failed to delete employee' });
-      } else {
-        if (result.affectedRows === 0) {
-          res.status(404).json({ error: 'Employee not found' });
+        if (error) {
+            console.log(error);
+            res.status(500).json({ error: 'Failed to delete employee' });
         } else {
-          res.sendStatus(204);
+            if (result.affectedRows === 0) {
+                res.status(404).json({ error: 'Employee not found' });
+            } else {
+                res.sendStatus(204);
+            }
         }
-      }
     });
-  });
+});
 
 // Route to delete a post
 

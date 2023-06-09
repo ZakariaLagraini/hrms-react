@@ -1,4 +1,6 @@
 import axios from "axios";
+import * as XLSX from 'xlsx';
+
 
 export default class EmployeeService{
 
@@ -36,5 +38,30 @@ export default class EmployeeService{
         throw error;
       }
     }
+
+    exportToExcel = () => {
+      return axios.get('http://localhost:3001/api/export_employees') // Adjust the API endpoint according to your server implementation
+        .then(response => {
+          
+          const employees = response.data;
+          
+          // Create a new workbook
+          const workbook = XLSX.utils.book_new();
+  
+          // Create a worksheet
+          const worksheet = XLSX.utils.json_to_sheet(employees);
+  
+          // Add the worksheet to the workbook
+          XLSX.utils.book_append_sheet(workbook, worksheet, 'Employees');
+  
+          // Generate the Excel file buffer
+          const excelBuffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
+  
+          return excelBuffer;
+        })
+        .catch(error => {
+          throw error;
+        });
+    };
     
 }

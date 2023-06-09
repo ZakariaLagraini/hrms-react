@@ -42,6 +42,31 @@ function Employee() {
     }
   };
 
+  const handleExport = async () => {
+    const employeeService = new EmployeeService();
+    employeeService.exportToExcel()
+    
+      .then(excelBuffer => {
+        // Create a Blob from the Excel buffer
+        const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+        // Create a temporary URL for the Blob
+        const url = URL.createObjectURL(blob);
+
+        // Trigger the file download
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'employees.xlsx';
+        link.click();
+
+        // Release the temporary URL
+        URL.revokeObjectURL(url);
+        
+      })
+      .catch(error => {
+        console.error('Error exporting employees:', error);
+      });
+  };
 
   const handleDelete = (id) => {
 
@@ -82,6 +107,10 @@ function Employee() {
             Importer des employés
           </Button>
         </label>
+        <Button onClick={handleExport} class="ui labeled icon button green" style={{ backgroundColor :' black', color : 'white'}} >
+            <i class="download icon white"></i>
+            Exporter des employés
+          </Button>
       </div>
       <br />
 
