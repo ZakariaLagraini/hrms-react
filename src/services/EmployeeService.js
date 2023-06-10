@@ -43,13 +43,14 @@ export default class EmployeeService {
     return axios.get('http://localhost:3001/api/export_employees').then(response => {
 
       const employees = response.data.map((employee) => ({
-        CIN: employee.cin,
-        Nom: employee.nom,
-        Prenom: employee.prenom,
-        SOM: employee.som,
-        Grade: employee.grade,
-        Date_Fonction: employee.date_fonction.substring(0, 10), // Format the date_fonction field
+        cin: employee.cin,
+        nom: employee.nom,
+        prenom: employee.prenom,
+        som: employee.som,
+        grade: employee.grade,
+        date_fonction: employee.date_fonction.substring(0, 10), // Format the date_fonction field
       }));
+      
 
       // Create a new workbook
       const workbook = XLSX.utils.book_new();
